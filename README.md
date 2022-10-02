@@ -39,4 +39,4 @@ A fork of Clipboard2File for Chromium-based browsers.
       height="50px"
       src="https://i.imgur.com/2jJOtTI.png"
       alt="Get Clipboard2File for Firefox"
-  />e!</p>
+  /></p>
