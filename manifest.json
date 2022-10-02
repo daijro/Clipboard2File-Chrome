@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "default_locale": "en",
   "name": "Clipboard2File",
   "version": "3.1",
@@ -10,12 +10,16 @@
   "options_ui": {
     "page": "settings/settings.html"
   },
-  "browser_specific_settings": {
-    "gecko": {
-      "strict_min_version": "102.0"
-    }
-  },
-  "permissions": ["<all_urls>", "clipboardRead", "clipboardWrite", "storage"],
+  "web_accessible_resources": [{
+    "resources": [
+      "content_script/shadow.css",
+      "content_script/popup.html",
+      "content_script/popup.css",
+      "content_script/event_fix.js"
+    ],
+    "matches": ["<all_urls>"]
+  }],
+  "permissions": ["clipboardRead", "clipboardWrite", "storage"],
   "content_scripts": [
     {
       "matches": ["<all_urls>"],

@@ -1,32 +1,42 @@
 let clientX = 0;
 let clientY = 0;
 
-async function handleClick(e) {
-  if (e.target.matches("input[type=file]:not([webkitdirectory])")) {
+const handleClick = async function (e) {
+	if (e.target.matches("input[type=file]:not([webkitdirectory])")) {
     e.preventDefault();
 
-    // Fall back to default behavior (inscure context, user forgot to set dom.events.asyncClipboard.clipboardItem to true in about:config, etc.)
+    // Fall back to default behavior
     if (!navigator.clipboard?.read) return e.target.showPicker();
 
-    const clipboardItems = await navigator.clipboard.read();
+    try {
+      var clipboardItems = await navigator.clipboard.read();
+    } catch (err) {
+      return e.target.showPicker();
+    }
 
     // At some point we should handle multiple images being in the clipboard, which is possible.
     const clipboardImageItem = clipboardItems.find((item) => item.types.includes("image/png"));
 
     if (!clipboardImageItem) return e.target.showPicker();
 
-    const [clipboardImage, shadowStyleRequest, iframeRequest, iframeStyleRequest, settings] = await Promise.all([
-      clipboardImageItem.getType("image/png"),
-      fetch(browser.runtime.getURL(`content_script/shadow.css`)),
-      fetch(browser.runtime.getURL(`content_script/popup.html`)),
-      fetch(browser.runtime.getURL(`content_script/popup.css`)),
-      browser.storage.local.get(["showFilenameBox", "clearOnPaste", "defaultFilename"]),
+    const [clipboardImage, shadowStyleRequest, iframeRequest, iframeStyleRequest] = await Promise.all([
+      clipboardImageItem.getType('image/png'),
+      fetch(chrome.runtime.getURL('content_script/shadow.css')),
+      fetch(chrome.runtime.getURL('content_script/popup.html')),
+      fetch(chrome.runtime.getURL('content_script/popup.css')),
     ]);
+
+    const settings = {}
+    for (const settingName of ["clearOnPaste", "defaultFilename", "showFilenameBox"]) {
+      await chrome.storage.local.get([settingName], function(data) {
+        settings[settingName] = data[settingName];
+      });
+    }
 
     const aside = document.createElement("aside");
     const iframe = document.createElement("iframe");
     const root = document.createElement("dialog");
-    const shadow = aside.attachShadow({ mode: "closed" });
+    const shadow = aside.attachShadow({mode: "closed"});
 
     const shadowStyleElement = document.createElement("style");
     shadowStyleElement.textContent = await shadowStyleRequest.text();
@@ -86,7 +96,7 @@ async function handleClick(e) {
     previewImage.src = URL.createObjectURL(clipboardImage);
     preview.style.backgroundImage = `url(${previewImage.src})`;
 
-    selectAll.textContent = browser.i18n.getMessage("showAllFiles", "Show all files");
+    selectAll.textContent = chrome.i18n.getMessage("showAllFiles", "Show all files");
 
     iframe.contentDocument.body.style.setProperty("--devicePixelRatio", iframe.contentWindow.devicePixelRatio);
     root.style.setProperty("--devicePixelRatio", window.devicePixelRatio);
@@ -114,16 +124,19 @@ async function handleClick(e) {
       "click",
       async () => {
         iframe.contentDocument.dispatchEvent(new FocusEvent("blur"));
-        if (settings.clearOnPaste) await navigator.clipboard.writeText("");
-
+        if (settings.clearOnPaste) {
+          window.focus();
+          if (document.activeElement) document.activeElement.blur();
+          await navigator.clipboard.writeText('')
+        }
         const dataTransfer = new DataTransfer();
-
+        
         let filename;
         if (filenameInput.value === `${defaultFilename}.png` || filenameInput.value.length === 0) filename = `${defaultFilename}.png`;
         else filename = filenameInput.value;
-
+        
         dataTransfer.items.add(new File([clipboardImage], filename, { type: "image/png" }));
-
+        
         e.target.files = dataTransfer.files;
         e.target.dispatchEvent(new Event("input", { bubbles: true }));
         e.target.dispatchEvent(new Event("change", { bubbles: true }));
@@ -181,20 +194,18 @@ async function handleClick(e) {
       easing,
     });
   }
-}
+};
 
 window.addEventListener("click", handleClick);
 document.addEventListener("pointerup", (e) => ((clientX = e.clientX), (clientY = e.clientY)), { passive: true });
 
-// Let the extension work on pages that stop propagation of input events (tinypng.com, etc.)
-exportFunction(
-  function () {
-    this.stopPropagation();
-    if (this.type === "click") handleClick(this);
-  },
-  Event.prototype,
-  { defineAs: "stopPropagation" }
-);
+// Add the stopPropagation hook
+var s = document.createElement('script');
+s.src = chrome.runtime.getURL('content_script/event_fix.js');
+s.onload = function() {
+    this.remove();
+};
+(document.head || document.documentElement).appendChild(s);
 
 function generateFilename() {
   const date = new Date(Date.now());

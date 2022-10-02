@@ -1,43 +1,43 @@
 window.addEventListener("DOMContentLoaded", async () => {
   const settings = {
     clearOnPaste: {
-      question: browser.i18n.getMessage("clearOnPaste"),
+      question: chrome.i18n.getMessage("clearOnPaste"),
       answers: [
         {
-          diplayValue: browser.i18n.getMessage("true"),
+          diplayValue: chrome.i18n.getMessage("true"),
           value: true,
         },
         {
-          diplayValue: browser.i18n.getMessage("false"),
+          diplayValue: chrome.i18n.getMessage("false"),
           value: false,
           default: true,
         },
       ],
     },
     showFilenameBox: {
-      question: browser.i18n.getMessage("showFilenameBox"),
+      question: chrome.i18n.getMessage("showFilenameBox"),
       answers: [
         {
-          diplayValue: browser.i18n.getMessage("true"),
+          diplayValue: chrome.i18n.getMessage("true"),
           value: true,
         },
         {
-          diplayValue: browser.i18n.getMessage("false"),
+          diplayValue: chrome.i18n.getMessage("false"),
           value: false,
           default: true,
         },
       ],
     },
     defaultFilename: {
-      question: browser.i18n.getMessage("defaultFilename"),
+      question: chrome.i18n.getMessage("defaultFilename"),
       answers: [
         {
-          diplayValue: browser.i18n.getMessage("formattedTime"),
+          diplayValue: chrome.i18n.getMessage("formattedTime"),
           value: "formatted",
           default: true,
         },
         {
-          diplayValue: browser.i18n.getMessage("unixTimestamp"),
+          diplayValue: chrome.i18n.getMessage("unixTimestamp"),
           value: "unix",
         },
         {
@@ -64,14 +64,16 @@ window.addEventListener("DOMContentLoaded", async () => {
       input.setAttribute("name", settingName);
       input.setAttribute("value", answer.value);
 
-      const storedValues = await browser.storage.local.get(settingName);
+      const storedValues = await chrome.storage.local.get([settingName]);
       const storedValue = storedValues[settingName];
 
       if (answer.value == storedValue) input.setAttribute("checked", "checked");
       else if (!storedValue && answer.default) input.setAttribute("checked", "checked");
 
       input.addEventListener("change", (e) => {
-        browser.storage.local.set({ [settingName]: answer.value });
+        chrome.storage.local.set({[settingName]: answer.value}, function () {
+          console.log('SETTING CHANGED', settingName, answer.value);
+        });
       });
 
       const label = document.createElement("label");
