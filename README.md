@@ -20,6 +20,10 @@ A fork of Clipboard2File for Chromium-based browsers.
 
 ---
 
+### Disclaimer
+
+**This project is non-production ready.** Chromium does not differentiate between website and extension permissions when it comes to clipboard access. You may be putting yourself at risk by granting clipboard permissions to an untrusted source. ([See #1](https://github.com/daijro/Clipboard2File-Chrome/issues/1#issue-1395351950))
+
 ### Install on Chromium browsers
 
 1. [Download zip file here](https://github.com/daijro/Clipboard2File-Chrome/releases)
