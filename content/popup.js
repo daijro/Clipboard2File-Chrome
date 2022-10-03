@@ -90,8 +90,8 @@ export async function popup(data) {
 
   selectAll.textContent = chrome.i18n.getMessage("showAllFiles", "Show all files");
 
-  iframe.contentDocument.body.style.setProperty("--devicePixelRatio", iframe.contentWindow.devicePixelRatio);
-  root.style.setProperty("--devicePixelRatio", window.devicePixelRatio);
+  iframe.contentDocument.body.style.setProperty("--devicePixelRatio", 1.0);
+  root.style.setProperty("--devicePixelRatio", 1.0);
 
   iframe.contentDocument.addEventListener(
     "keydown",
@@ -135,15 +135,6 @@ export async function popup(data) {
       return showPicker();
     },
     { signal, once: true }
-  );
-
-  window.addEventListener(
-    "resize",
-    () => {
-      iframe.contentDocument.body.style.setProperty("--devicePixelRatio", iframe.contentWindow.devicePixelRatio);
-      root.style.setProperty("--devicePixelRatio", window.devicePixelRatio);
-    },
-    { signal }
   );
 
   await previewImage.decode();
