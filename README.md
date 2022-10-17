@@ -26,22 +26,24 @@ The installation process is split into two pieces. The **[Chromium extension](ht
 
 The Companion uses Chrome's [Native Messaging API](https://developer.chrome.com/docs/apps/nativeMessaging/) to gather clipboard images externally to the browser ([See #1](https://github.com/daijro/Clipboard2File-Chrome/issues/1#issue-1395351950)). It only runs when called by Chrome, not on startup. It also does not require admin/root privileges to install.
 
-### Installing the Extension
+## Installing the Extension
 
 To install the extension, simply go to [releases](https://github.com/daijro/Clipboard2File-Chrome/releases) and click the latest **.crx** file under Assets. Your browser should prompt to install the extension.
 
-### Installing the Companion
+## Installing the Companion
 
 *Note*: The Companion only has to be installed per system. It runs universally across any Chromium-based browser with the Clipboard2File extension installed.
 
 To install from source code, download the repository and go to the hosts folder. There are setup scripts included to automatically register the native messaging host on your system. Instructions are provided below.
 
-#### Windows (Binaries)
+### Windows Installer
 
 Windows users can simply download and run the [installer](https://github.com/daijro/Clipboard2File-Chrome/releases) to automatically register the Clipboard2File native messaging host. It can also be uninstalled in Control Panel.
 
+<img src="https://user-images.githubusercontent.com/72637910/196106857-734814fb-52a1-4b06-a366-5240ae5aabb9.png" width=300>
 
-#### Windows
+
+### Windows
 
 1. Install [Python 3.x](https://www.python.org/downloads/)
 
@@ -59,7 +61,7 @@ Windows users can simply download and run the [installer](https://github.com/dai
 
 To uninstall, run `uninstall.win.bat`.
 
-#### MacOS / Linux
+### MacOS / Linux
 
 1. Open a terminal
 
