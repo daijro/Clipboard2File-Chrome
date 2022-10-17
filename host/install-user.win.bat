@@ -1,0 +1,1 @@
+REG ADD "HKCU\Software\Google\Chrome\NativeMessagingHosts\com.daijro.clipboard2file" /ve /t REG_SZ /d "%~dp0com.daijro.clipboard2file.win.json" /f

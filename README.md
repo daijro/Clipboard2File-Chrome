@@ -20,18 +20,62 @@ A fork of Clipboard2File for Chromium-based browsers.
 
 ---
 
-### Disclaimer
+# Install
 
-**This project is non-production ready.** Chromium does not differentiate between website and extension permissions when it comes to clipboard access. You may be putting yourself at risk by granting clipboard permissions to an untrusted source. ([See #1](https://github.com/daijro/Clipboard2File-Chrome/issues/1#issue-1395351950))
+The installation process is split into two pieces. The **[Chromium extension](https://github.com/daijro/Clipboard2File-Chrome/tree/master/app)**, and the **[Companion](https://github.com/daijro/Clipboard2File-Chrome/tree/master/host)**.
 
-### Install on Chromium browsers
+The Companion uses Chrome's [Native Messaging API](https://developer.chrome.com/docs/apps/nativeMessaging/) to gather clipboard images externally to the browser ([See #1](https://github.com/daijro/Clipboard2File-Chrome/issues/1#issue-1395351950)). It only runs when called by Chrome, not on startup. It also does not require admin/root privileges to install.
 
-1. [Download zip file here](https://github.com/daijro/Clipboard2File-Chrome/releases)
-1. Extract downloaded zip to folder
-2. Open chrome://extensions
-3. Enable "developer mode"
-4. Load unpacked extension
-5. Select the path you extracted your files
+### Installing the Extension
+
+To install the extension, simply go to [releases](https://github.com/daijro/Clipboard2File-Chrome/releases) and click the latest **.crx** file under Assets. Your browser should prompt to install the extension.
+
+### Installing the Companion
+
+*Note*: The Companion only has to be installed per system. It runs universally across any Chromium-based browser with the Clipboard2File extension installed.
+
+To install from source code, download the repository and go to the hosts folder. There are setup scripts included to automatically register the native messaging host on your system. Instructions are provided below.
+
+#### Windows (Binaries)
+
+Windows users can simply download and run the [installer](https://github.com/daijro/Clipboard2File-Chrome/releases) to automatically register the Clipboard2File native messaging host. It can also be uninstalled in Control Panel.
+
+
+#### Windows
+
+1. Install [Python 3.x](https://www.python.org/downloads/)
+
+2. In the setup, check *Add python.exe to PATH*
+
+3. Finish the setup
+
+4. Download and extract a copy of the repo [here](https://github.com/daijro/Clipboard2File-Chrome/archive/refs/heads/master.zip).
+
+5. Navigate to `Clipboard2File-Chrome-master` > `host` and open Command Prompt there.
+
+6. Run the following command: `pip install -r requirements.txt`.
+
+7. Now, open `install-global.win.bat` to install for the machine, or `install-user.win.bat` to install for the current user.
+
+To uninstall, run `uninstall.win.bat`.
+
+#### MacOS / Linux
+
+1. Open a terminal
+
+2. Run the following commands:
+> ```bash
+> git clone https://github.com/daijro/Clipboard2File-Chrome
+> cd Clipboard2File-Chrome/host
+> pip3 install -r requirements.txt
+> sh ./install.unix.sh
+
+
+
+
+
+
+
 
 <hr width=50>
 

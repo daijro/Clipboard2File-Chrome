@@ -1,8 +1,10 @@
 {
   "manifest_version": 3,
-  "default_locale": "en",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAufqEo/bZDU847TXJmoTt27d32QZ0px7i4kkEUuC490PeftSlEdKJDg2aLA9gDdazVYwi/mQxUzlq3Thm85jUmSzZOs8X4pWDExcN2buv3sjKq1WZSz08PZRIth3/iuUVEfd+RElZ4D4QLCe3vBH9VibzCFqYIVenm8c4+yJX52PyrHfcxGg7uUSyLZjI2hFHT4aYHfeXQQQuDaeemKQd8tPO1TOSe6HYbt7hoioE+nyCVuQFUVCIE8JxJXs+43V9YH7uFuFkwetYo/629fGyBQvHbpOVNnDXjQpKavvxtMkecsIIfBBHuHUXPJtpgrQQWVTqPn/wjtyg1bbiBMMGRQIDAQAB",
   "name": "Clipboard2File",
-  "version": "3.2",
+  "author": "daijro",
+  "version": "4.0",
+  "default_locale": "en",
   "description": "Instantly upload pictures from your clipboard!",
   "icons": {
     "549": "./icons/clipboard2file.png"
@@ -20,7 +22,7 @@
     ],
     "matches": ["<all_urls>"]
   }],
-  "permissions": ["clipboardRead", "clipboardWrite", "storage"],
+  "permissions": ["nativeMessaging", "storage"],
   "background": {
     "service_worker": "background/background.js"
   },

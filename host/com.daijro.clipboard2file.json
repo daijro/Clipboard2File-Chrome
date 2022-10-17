@@ -1,0 +1,7 @@
+{
+    "name": "com.daijro.clipboard2file",
+    "description": "Clipboard2File Companion Service",
+    "path": "HOST_PATH",
+    "type": "stdio",
+    "allowed_origins": ["chrome-extension://fodbegonoeblgoepidcbkbapibaljama/"]
+}

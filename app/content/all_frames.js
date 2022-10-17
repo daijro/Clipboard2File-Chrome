@@ -5,36 +5,15 @@ async function handleClick(event) {
   if (event.target.matches("input[type=file]:not([webkitdirectory])")) {
     event.preventDefault();
 
-    // Fall back to default behavior
-    if (!navigator.clipboard?.read) return event.target.showPicker();
-
-    try {
-      var clipboardItems = await navigator.clipboard.read();
-    } catch (err) {
-      return event.target.showPicker();
-    }
-
-    const clipboardImageItem = clipboardItems.find((item) => item.types.includes("image/png"));
-
-    if (!clipboardImageItem) return event.target.showPicker();
-
     token = crypto.randomUUID();
     clicked = event.target;
 
-    const clipboardImageBlob = await clipboardImageItem.getType("image/png");
-    
     const inputAttributes = {};
     
     for (attr of event.target.attributes) {
       inputAttributes[attr.name] = {name: attr.name, value: attr.value};
     }
-    // Encode the image as Base64
-    var reader = new FileReader();
-    reader.readAsDataURL(clipboardImageBlob);
-    // Send the image to the background script when done
-    reader.onloadend = function() {
-      chrome.runtime.sendMessage({type: "click", clipboardImageB64: reader.result, token, inputAttributes});
-    }
+    chrome.runtime.sendMessage({type: "click", token, inputAttributes});
   }
 }
 

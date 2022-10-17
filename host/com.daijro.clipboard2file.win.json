@@ -1,0 +1,7 @@
+{
+    "name": "com.daijro.clipboard2file",
+    "description": "Clipboard2File Companion Service",
+    "path": "runner.win.bat",
+    "type": "stdio",
+    "allowed_origins": ["chrome-extension://fodbegonoeblgoepidcbkbapibaljama/"]
+}

@@ -12,7 +12,6 @@ export async function popup(data) {
   }
 
   const { clipboardImageB64, token, inputAttributes, frameId, tabId } = data;
-
   // Convert base64 image back to a blob
   // const clipboardImage = await fetch(clipboardImageB64).then(r => r.blob());
 
@@ -114,9 +113,7 @@ export async function popup(data) {
     async () => {
       iframe.contentDocument.dispatchEvent(new FocusEvent("blur"));
       if (settings.clearOnPaste) {
-        window.focus();
-        if (document.activeElement) document.activeElement.blur();
-        await navigator.clipboard.writeText('')
+        chrome.runtime.sendMessage({type: "clear"});
       }
       let filename;
       if (filenameInput.value === `${defaultFilename}.png` || filenameInput.value.length === 0) filename = `${defaultFilename}.png`;
