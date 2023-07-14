@@ -1,0 +1,3 @@
+# Remove built files for host
+dist
+*.exe
